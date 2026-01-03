@@ -9,11 +9,11 @@ interface DashboardLayoutProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: '📊' },
-  { name: 'Builders', href: '/builders', icon: '🏗️' },
-  { name: 'House Schemas', href: '/schemas', icon: '🏠' },
-  { name: 'Developments', href: '/developments', icon: '🏘️' },
-  { name: 'Streets', href: '/streets', icon: '🛤️' },
+  { name: 'Dashboard', href: '/dashboard/dashboard', icon: '📊' },
+  { name: 'Builders', href: '/dashboard/builders', icon: '🏗️' },
+  { name: 'House Schemas', href: '/dashboard/schemas', icon: '🏠' },
+  { name: 'Developments', href: '/dashboard/developments', icon: '🏘️' },
+  { name: 'Streets', href: '/dashboard/streets', icon: '🛤️' },
 ]
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
