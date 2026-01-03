@@ -37,6 +37,7 @@ interface Filters {
   unverified: boolean
   sortBy: string
   sortOrder: string
+  page?: string
 }
 
 const bedroomOptions = [

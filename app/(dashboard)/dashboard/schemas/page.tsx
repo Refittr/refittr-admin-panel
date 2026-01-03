@@ -45,7 +45,7 @@ async function getSchemas(params: {
       .from('house_schemas')
       .select(`
         *,
-        builders:builder_id!inner (
+        builders!builder_id (
           id,
           name,
           logo_url
@@ -100,7 +100,7 @@ async function getSchemas(params: {
     if (buildersError) throw buildersError
 
     // Transform the data
-    const schemas: SchemaWithBuilder[] = (data || []).map(schema => ({
+    const schemas: SchemaWithBuilder[] = (data || []).map((schema: any) => ({
       ...schema,
       builder: schema.builders,
       room_count: schema.rooms?.[0]?.count || 0,
