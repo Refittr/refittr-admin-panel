@@ -38,7 +38,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-[#024059] transform transition-transform lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:static lg:inset-0`}>
+      }`}>
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center h-16 px-6 bg-[#087F8C]">
