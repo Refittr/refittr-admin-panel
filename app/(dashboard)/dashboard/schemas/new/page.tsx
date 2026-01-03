@@ -1505,7 +1505,7 @@ export default function NewSchemaPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-[#0F172A]">Floor Plan</p>
-                    <p className="text-sm text-gray-500 truncate">{formData.floor_plan_url.split('/').pop()}</p>
+                    <p className="text-sm text-gray-500 truncate">{formData.floor_plan_url?.split('/').pop() || 'Floor plan'}</p>
                     {formData.floor_plan_url && (
                       <a
                         href={formData.floor_plan_url}
@@ -1585,14 +1585,14 @@ export default function NewSchemaPage() {
               </div>
               {formData.street_ids.length > 0 ? (
                 <div className="space-y-2">
-                  {formData.street_ids.map(streetId => {
-                    const street = streets.find(s => s.id === streetId)
-                    return (
-                      <div key={streetId} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded">
-                        <span className="text-sm text-[#0F172A]">{street?.name || `Street ID: ${streetId}`}</span>
-                      </div>
-                    )
-                  })}
+                  {selectedStreets.map(street => (
+  <div key={street.id} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded">
+    <div>
+      <span className="text-sm font-medium text-[#0F172A]">{street.street_name}</span>
+      <span className="text-sm text-gray-500 ml-2">{street.postcode_area}</span>
+    </div>
+  </div>
+))}
                   <p className="text-sm text-gray-500 mt-3">
                     {formData.street_ids.length} street{formData.street_ids.length !== 1 ? 's' : ''} selected
                   </p>

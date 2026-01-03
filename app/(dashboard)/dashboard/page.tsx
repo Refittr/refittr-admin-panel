@@ -72,12 +72,12 @@ async function getRecentActivity(): Promise<RecentSchema[]> {
 
     if (error) throw error
 
-    return (data || []).map(item => ({
+    return (data || []).map((item: any) => ({
       id: item.id,
       model_name: item.model_name,
       updated_at: item.updated_at,
       builder: {
-        name: item.builders?.name || 'Unknown Builder'
+        name: item.builders?.[0]?.name || item.builders?.name || 'Unknown Builder'
       }
     }))
   } catch (error) {
