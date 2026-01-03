@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import type { HouseSchema, Builder } from '@/lib/supabase'
 import SchemasClientComponent from '@/app/(dashboard)/dashboard/schemas/SchemasClientComponent'
+import { Suspense } from 'react'
 
 interface SchemaWithBuilder extends HouseSchema {
   builder: Builder
@@ -50,8 +51,7 @@ async function getSchemas(params: {
           name,
           logo_url
         ),
-        rooms!house_schema_id(count),
-        streets!development_id(count)
+        rooms(count)
       `, { count: 'exact' })
 
     // Apply filters
@@ -164,23 +164,25 @@ export default async function SchemasPage({ searchParams }: SchemasPageProps) {
         </Link>
       </div>
 
-      {/* Schemas List Component */}
-      <SchemasClientComponent 
-        schemas={schemas}
-        builders={builders}
-        totalCount={totalCount}
-        totalPages={totalPages}
-        currentPage={page}
-        initialFilters={{
-          search,
-          builder,
-          bedrooms,
-          propertyType,
-          unverified,
-          sortBy,
-          sortOrder
-        }}
-      />
+{/* Schemas List Component */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <SchemasClientComponent 
+          schemas={schemas}
+          builders={builders}
+          totalCount={totalCount}
+          totalPages={totalPages}
+          currentPage={page}
+          initialFilters={{
+            search,
+            builder,
+            bedrooms,
+            propertyType,
+            unverified,
+            sortBy,
+            sortOrder
+          }}
+        />
+      </Suspense>
     </div>
   )
 }
