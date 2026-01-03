@@ -16,6 +16,7 @@ interface FormErrors {
   name?: string
   logo?: string
   submit?: string
+  notes?: string
 }
 
 export default function EditBuilderPage() {
