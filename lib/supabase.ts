@@ -58,6 +58,7 @@ export interface Street {
   postcode_area: string
   development_id: string | null
   created_at: string
+  developments?: { name: string } | null
 }
 
 export interface Development {
