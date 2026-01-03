@@ -93,9 +93,9 @@ async function getSchemas(params: {
 
     // Get all builders for filter dropdown
     const { data: builders, error: buildersError } = await supabase
-      .from('builders')
-      .select('id, name')
-      .order('name')
+  .from('builders')
+  .select('*')
+  .order('name')
 
     if (buildersError) throw buildersError
 
