@@ -35,32 +35,47 @@ export default function HomePage() {
             Save money. Perfect fit guaranteed.
           </p>
 
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <Link
+              href="/about"
+              className="inline-flex items-center justify-center px-8 py-3 border border-[#087F8C] rounded-md shadow-sm text-sm font-medium text-[#087F8C] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
+            >
+              Learn More About Refittr
+            </Link>
+          </div>
+
           {/* Value Propositions */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 max-w-2xl mx-auto">
             <ValueProp
               icon="🎯"
               title="Intelligent Matching"
-              description="Algorithm matches items to house dimensions"
+              description="Our algorithm matches items to house dimensions automatically. No more manual measurements or uncertainty about whether something will fit."
             />
             <ValueProp
               icon="✓"
               title="Verified Schemas"
-              description="Database of UK house builder floor plans"
+              description="Comprehensive database of UK house builder floor plans. We know the exact specifications of thousands of UK homes"
             />
             <ValueProp
               icon="♻️"
               title="Waste Reduction"
-              description="Keep fixtures out of landfills"
+              description="Keep quality fixtures out of landfills. Give perfectly good items a second life instead of contributing to waste."
             />
             <ValueProp
               icon="💰"
               title="Cost Savings"
-              description="Second-hand at fraction of new prices"
+              description="Purchase quality second-hand fixtures at a fraction of retail prices. Save hundreds or thousands."
             />
             <ValueProp
               icon="📏"
               title="Perfect Fit"
-              description="No more measuring mistakes"
+              description="No more measuring mistakes or items that don't fit through doorways. Buy with confidence knowing it will work in your space."
+            />
+            <ValueProp
+              icon="🚀"
+              title="Launching July 2026"
+              description="Built specifically for UK homes and UK standards. Starting in Merseyside with plans for nationwide expansion."
             />
           </div>
         </div>
@@ -68,13 +83,14 @@ export default function HomePage() {
 
       {/* Footer with Admin Link */}
       <footer className="py-6 px-4">
-        <div className="max-w-7xl mx-auto text-center">
+        <div className="max-w-7xl mx-auto text-center space-y-4">
           <Link
-            href="/dashboard"
-            className="text-sm text-[#6B7280] hover:text-[#087F8C] transition-colors"
+            href="/login"
+            className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#087F8C] hover:bg-[#087F8C]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
           >
-            Admin
+            Admin Login
           </Link>
+          <p className="text-sm text-[#6B7280]">© 2025 Refittr.</p>
         </div>
       </footer>
     </div>

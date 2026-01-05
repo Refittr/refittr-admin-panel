@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { createBrowserClient } from '@/lib/auth'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -20,11 +21,45 @@ const navigation = [
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createBrowserClient()
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        router.push('/login')
+      } else {
+        setIsLoading(false)
+      }
+    }
+    checkAuth()
+  }, [router, supabase])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
 
   const isActive = (href: string) => {
     if (href === '/dashboard') return pathname === '/dashboard'
     return pathname.startsWith(href)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-[#087F8C] rounded-xl flex items-center justify-center text-3xl mx-auto mb-4">
+            🏠
+          </div>
+          <p className="text-[#6B7280]">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -69,14 +104,25 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* User info placeholder */}
           <div className="px-4 py-4 border-t border-gray-800">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-[#087F8C] rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-white">U</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-[#087F8C] rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-white">A</span>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-white">Admin User</p>
+                  <p className="text-xs text-gray-400">Logged In</p>
+                </div>
               </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-white">Admin User</p>
-                <p className="text-xs text-gray-400">admin@refittr.com</p>
-              </div>
+              <button
+                onClick={handleLogout}
+                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-slate-800 rounded"
+                title="Logout"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>

@@ -115,13 +115,6 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
     })
     setShowEditModal(true)
   }
-      height_cm: room.height_cm.toString(),
-      dimensions_need_verification: (room as any).dimensions_need_verification || false,
-      verification_reason: (room as any).verification_reason || '',
-      notes: room.notes || ''
-    })
-    setShowEditModal(true)
-  }
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -1630,7 +1630,7 @@ export default function NewSchemaPage() {
       {/* Navigation Buttons */}
       <div className="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
         <Link
-          href="/schemas"
+          href="/dashboard/schemas"
           className="inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
         >
           Cancel
