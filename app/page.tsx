@@ -1,65 +1,92 @@
-import Image from "next/image";
+import Link from 'next/link'
+import Image from 'next/image'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col">
+      {/* Main Content - Centered */}
+      <main className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+          {/* Logo */}
+          <div className="flex justify-center">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/refittr-app-icon-512.png"
+              alt="Refittr Logo"
+              width={120}
+              height={120}
+              className="rounded-2xl shadow-lg"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+
+          {/* Company Name */}
+          <h1 className="text-5xl md:text-6xl font-bold text-[#0F172A] tracking-tight">
+            Refittr
+          </h1>
+
+          {/* Tagline */}
+          <p className="text-xl md:text-2xl text-[#087F8C] font-medium">
+            Precision-fit marketplace for second-hand home fixtures
+          </p>
+
+          {/* Elevator Pitch */}
+          <p className="text-lg text-[#6B7280] leading-relaxed max-w-2xl mx-auto">
+            Buy and sell fixtures with confidence using our intelligent matching algorithm 
+            that compares item dimensions to verified UK house schemas. Reduce waste. 
+            Save money. Perfect fit guaranteed.
+          </p>
+
+          {/* Value Propositions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 max-w-2xl mx-auto">
+            <ValueProp
+              icon="🎯"
+              title="Intelligent Matching"
+              description="Algorithm matches items to house dimensions"
+            />
+            <ValueProp
+              icon="✓"
+              title="Verified Schemas"
+              description="Database of UK house builder floor plans"
+            />
+            <ValueProp
+              icon="♻️"
+              title="Waste Reduction"
+              description="Keep fixtures out of landfills"
+            />
+            <ValueProp
+              icon="💰"
+              title="Cost Savings"
+              description="Second-hand at fraction of new prices"
+            />
+            <ValueProp
+              icon="📏"
+              title="Perfect Fit"
+              description="No more measuring mistakes"
+            />
+          </div>
         </div>
       </main>
+
+      {/* Footer with Admin Link */}
+      <footer className="py-6 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <Link
+            href="/dashboard"
+            className="text-sm text-[#6B7280] hover:text-[#087F8C] transition-colors"
+          >
+            Admin
+          </Link>
+        </div>
+      </footer>
     </div>
-  );
+  )
+}
+
+function ValueProp({ icon, title, description }: { icon: string; title: string; description: string }) {
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 text-left">
+      <div className="text-3xl mb-3">{icon}</div>
+      <h3 className="text-lg font-semibold text-[#0F172A] mb-2">{title}</h3>
+      <p className="text-sm text-[#6B7280]">{description}</p>
+    </div>
+  )
 }
