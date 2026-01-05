@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import type { Builder } from '@/lib/supabase'
 
 interface BuilderWithStats extends Builder {
@@ -49,12 +48,14 @@ export default function BuildersClientComponent({ builders: initialBuilders }: B
     setIsDeleting(builderId)
     
     try {
-      const { error } = await supabase
-        .from('builders')
-        .delete()
-        .eq('id', builderId)
+      const response = await fetch(`/api/builders/${builderId}`, {
+        method: 'DELETE'
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to delete builder')
+      }
 
       // Remove builder from local state
       setBuilders(prev => prev.filter(b => b.id !== builderId))

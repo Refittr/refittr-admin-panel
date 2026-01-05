@@ -1,16 +1,19 @@
-import { createSupabaseClient } from '@/lib/supabase'
+import { createSupabaseAdmin } from '@/lib/supabase'
 import DevelopmentsClientComponent from './DevelopmentsClientComponent'
 
 export default async function DevelopmentsPage() {
-  const supabase = createSupabaseClient()
-
-  // Fetch all developments
-  const { data: developments, error } = await supabase
-    .from('developments')
-    .select('*')
-    .order('name', { ascending: true })
-
-  if (error) {
+  const supabase = createSupabaseAdmin()
+  
+  let developments = []
+  try {
+    const { data, error } = await supabase
+      .from('developments')
+      .select('*')
+      .order('name', { ascending: true })
+    
+    if (error) throw error
+    developments = data || []
+  } catch (error) {
     console.error('Error fetching developments:', error)
   }
 

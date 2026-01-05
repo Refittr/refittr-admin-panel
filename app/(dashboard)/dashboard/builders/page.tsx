@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { createSupabaseAdmin } from '@/lib/supabase'
 import type { Builder } from '@/lib/supabase'
 import BuildersClientComponent from '@/app/(dashboard)/dashboard/builders/BuildersClientComponent'
 
@@ -9,23 +9,25 @@ interface BuilderWithStats extends Builder {
 
 async function getBuilders(): Promise<BuilderWithStats[]> {
   try {
-    const { data, error } = await supabase
+    const supabase = createSupabaseAdmin()
+
+    const { data: builders, error } = await supabase
       .from('builders')
       .select(`
         *,
-        house_schemas!builder_id(count)
+        house_schemas:house_schemas(count)
       `)
-      .order('created_at', { ascending: false })
+      .order('name', { ascending: true })
 
     if (error) throw error
 
-    return (data || []).map(builder => ({
+    return (builders || []).map(builder => ({
       ...builder,
       schema_count: builder.house_schemas?.[0]?.count || 0
     }))
   } catch (error) {
     console.error('Error fetching builders:', error)
-    throw new Error('Failed to fetch builders')
+    return []
   }
 }
 

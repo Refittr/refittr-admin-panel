@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import type { Builder, Street, Development } from '@/lib/supabase'
 
 interface FormData {
@@ -131,12 +130,9 @@ export default function NewSchemaPage() {
 
   const fetchBuilders = async () => {
     try {
-      const { data, error } = await supabase
-        .from('builders')
-        .select('*')
-        .order('name')
-
-      if (error) throw error
+      const response = await fetch('/api/builders')
+      if (!response.ok) throw new Error('Failed to fetch builders')
+      const data = await response.json()
       setBuilders(data || [])
     } catch (error) {
       console.error('Error fetching builders:', error)
@@ -147,12 +143,9 @@ export default function NewSchemaPage() {
 
   const fetchDevelopments = async () => {
     try {
-      const { data, error } = await supabase
-        .from('developments')
-        .select('*')
-        .order('name')
-
-      if (error) throw error
+      const response = await fetch('/api/developments')
+      if (!response.ok) throw new Error('Failed to fetch developments')
+      const data = await response.json()
       setDevelopments(data || [])
     } catch (error) {
       console.error('Error fetching developments:', error)
@@ -166,17 +159,17 @@ export default function NewSchemaPage() {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('streets')
-        .select(`
-          *,
-          developments:development_id (name)
-        `)
-        .or(`street_name.ilike.%${query}%,postcode_area.ilike.%${query}%`)
-        .limit(20)
-
-      if (error) throw error
-      setSearchResults(data || [])
+      const response = await fetch('/api/streets')
+      if (!response.ok) throw new Error('Failed to fetch streets')
+      const allStreets = await response.json()
+      
+      // Filter streets client-side
+      const filtered = allStreets.filter((street: Street) => 
+        street.street_name.toLowerCase().includes(query.toLowerCase()) ||
+        street.postcode_area.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 20)
+      
+      setSearchResults(filtered)
     } catch (error) {
       console.error('Error searching streets:', error)
     }
@@ -213,20 +206,21 @@ export default function NewSchemaPage() {
 
     setIsCreatingDevelopment(true)
     try {
-      const { data, error } = await supabase
-        .from('developments')
-        .insert([{
+      const response = await fetch('/api/developments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           name: newDevelopmentData.name.trim(),
           postcode_area: newDevelopmentData.postcode_area.trim(),
           development_type: newDevelopmentData.development_type || null,
           builder_id: formData.builder_id,
           year_built: newDevelopmentData.year_built || null,
           notes: newDevelopmentData.notes.trim() || null
-        }])
-        .select()
-        .single()
+        })
+      })
 
-      if (error) throw error
+      if (!response.ok) throw new Error('Failed to create development')
+      const data = await response.json()
 
       // Add to developments list and select it
       setDevelopments(prev => [...prev, data])
@@ -253,21 +247,19 @@ export default function NewSchemaPage() {
 
     setIsCreatingStreet(true)
     try {
-      const { data, error } = await supabase
-        .from('streets')
-        .insert([{
+      const response = await fetch('/api/streets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           street_name: newStreetData.street_name.trim(),
           postcode: newStreetData.postcode.trim() || null,
           postcode_area: newStreetData.postcode_area.trim(),
           development_id: newStreetData.development_id || null
-        }])
-        .select(`
-          *,
-          developments:development_id (name)
-        `)
-        .single()
+        })
+      })
 
-      if (error) throw error
+      if (!response.ok) throw new Error('Failed to create street')
+      const data = await response.json()
 
       // Add to selected streets
       handleStreetSelect(data)
@@ -536,10 +528,11 @@ export default function NewSchemaPage() {
     setSubmitError('')
 
     try {
-      // Create house schema
-      const { data: schemaData, error: schemaError } = await supabase
-        .from('house_schemas')
-        .insert([{
+      // Create house schema via API
+      const response = await fetch('/api/schemas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           builder_id: formData.builder_id,
           model_name: formData.model_name.trim(),
           bedrooms: formData.bedrooms,
@@ -550,32 +543,23 @@ export default function NewSchemaPage() {
           exterior_photo_url: formData.exterior_photo_url,
           spec_sheet_url: formData.spec_sheet_url,
           verified: formData.verified,
-          notes: formData.notes.trim() || null
-        }])
-        .select()
-        .single()
+          notes: formData.notes.trim() || null,
+          street_ids: formData.street_ids
+        })
+      })
 
-      if (schemaError) throw schemaError
-
-      // Create house_schema_streets entries
-      if (formData.street_ids.length > 0) {
-        const streetLinks = formData.street_ids.map(streetId => ({
-          house_schema_id: schemaData.id,
-          street_id: streetId
-        }))
-
-        const { error: streetsError } = await supabase
-          .from('house_schema_streets')
-          .insert(streetLinks)
-
-        if (streetsError) throw streetsError
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to create house schema')
       }
 
-      // Success! Redirect to the new schema page
-      router.push(`/schemas/${schemaData.id}`)
-    } catch (error) {
+      const schemaData = await response.json()
+
+      // Success! Redirect to the schemas list
+      router.push('/dashboard/schemas')
+    } catch (error: any) {
       console.error('Error creating house schema:', error)
-      setSubmitError('Failed to create house schema. Please try again.')
+      setSubmitError(error.message || 'Failed to create house schema. Please try again.')
     } finally {
       setIsSubmitting(false)
     }

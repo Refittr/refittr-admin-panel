@@ -1,19 +1,22 @@
-import { createSupabaseClient } from '@/lib/supabase'
+import { createSupabaseAdmin } from '@/lib/supabase'
 import StreetsClientComponent from './StreetsClientComponent'
 
 export default async function StreetsPage() {
-  const supabase = createSupabaseClient()
-
-  // Fetch all streets with development names
-  const { data: streets, error } = await supabase
-    .from('streets')
-    .select(`
-      *,
-      developments!development_id(name)
-    `)
-    .order('street_name', { ascending: true })
-
-  if (error) {
+  const supabase = createSupabaseAdmin()
+  
+  let streets = []
+  try {
+    const { data, error } = await supabase
+      .from('streets')
+      .select(`
+        *,
+        developments!development_id(name)
+      `)
+      .order('street_name', { ascending: true })
+    
+    if (error) throw error
+    streets = data || []
+  } catch (error) {
     console.error('Error fetching streets:', error)
   }
 

@@ -3,7 +3,6 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import type { Builder } from '@/lib/supabase'
 
 interface FormData {
@@ -86,29 +85,26 @@ export default function NewBuilderPage() {
     setUploadProgress(0)
 
     try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`
-      const filePath = `builder-logos/${fileName}`
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('bucket', 'builder-logos')
 
-      const { data, error } = await supabase.storage
-        .from('builder-logos')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        })
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Upload failed')
+      }
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('builder-logos')
-        .getPublicUrl(data.path)
-
+      const data = await response.json()
       setUploadProgress(100)
-      return urlData.publicUrl
-    } catch (error) {
+      return data.url
+    } catch (error: any) {
       console.error('Error uploading logo:', error)
-      setErrors(prev => ({ ...prev, logo: 'Failed to upload logo. Please try again.' }))
+      setErrors(prev => ({ ...prev, logo: `Failed to upload logo: ${error.message}` }))
       return null
     } finally {
       setIsUploadingLogo(false)
@@ -136,32 +132,36 @@ export default function NewBuilderPage() {
         }
       }
 
-      // Insert builder into database
-      const { data, error } = await supabase
-        .from('builders')
-        .insert([
-          {
-            name: formData.name.trim(),
-            notes: formData.notes.trim() || null,
-            logo_url: logoUrl
-          }
-        ])
-        .select()
+      // Insert builder into database via API
+      const response = await fetch('/api/builders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          notes: formData.notes.trim() || null,
+          logo_url: logoUrl
+        })
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to create builder')
+      }
 
       setSuccessMessage('Builder created successfully!')
       
       // Redirect after a short delay to show success message
       setTimeout(() => {
-        router.push('/builders')
+        router.push('/dashboard/builders')
       }, 1500)
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating builder:', error)
+      console.error('Error details:', JSON.stringify(error, null, 2))
+      const errorMessage = error?.message || error?.error_description || error?.hint || JSON.stringify(error)
       setErrors(prev => ({ 
         ...prev, 
-        submit: 'Failed to create builder. Please try again.' 
+        submit: `Failed to create builder: ${errorMessage}` 
       }))
     } finally {
       setIsSubmitting(false)

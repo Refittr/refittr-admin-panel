@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { createSupabaseAdmin } from '@/lib/supabase'
 import type { HouseSchema, Builder } from '@/lib/supabase'
 import SchemasClientComponent from '@/app/(dashboard)/dashboard/schemas/SchemasClientComponent'
 import { Suspense } from 'react'
@@ -23,31 +23,48 @@ interface SchemasPageProps {
   }
 }
 
-async function getSchemas(params: {
-  page: number
-  search: string
-  builder: string
-  bedrooms: string
-  propertyType: string
-  unverified: boolean
-  sortBy: string
-  sortOrder: string
-}): Promise<{
-  schemas: SchemaWithBuilder[]
-  totalCount: number
-  builders: Builder[]
-}> {
-  const pageSize = 20
-  const offset = (params.page - 1) * pageSize
-
+async function getSchemas(): Promise<SchemaWithBuilder[]> {
   try {
-    // Build the query
-    let query = supabase
+    const supabase = createSupabaseAdmin()
+
+    const { data: schemas, error } = await supabase
       .from('house_schemas')
       .select(`
         *,
-        builders!builder_id (
-          id,
+        builder:builders(id, name),
+        rooms:rooms(count),
+        streets:house_schema_streets(count)
+      `)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+
+    return (schemas || []).map(schema => ({
+      ...schema,
+      room_count: schema.rooms?.[0]?.count || 0,
+      street_count: schema.streets?.[0]?.count || 0
+    }))
+  } catch (error) {
+    console.error('Error fetching schemas:', error)
+    return []
+  }
+}
+
+async function getBuilders(): Promise<Builder[]> {
+  try {
+    const supabase = createSupabaseAdmin()
+    const { data, error } = await supabase
+      .from('builders')
+      .select('*')
+      .order('name')
+
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Error fetching builders:', error)
+    return []
+  }
+}
           name,
           logo_url
         ),
@@ -123,27 +140,8 @@ async function getSchemas(params: {
 }
 
 export default async function SchemasPage({ searchParams }: SchemasPageProps) {
-  const page = parseInt(searchParams?.page || '1')
-  const search = searchParams?.search || ''
-  const builder = searchParams?.builder || ''
-  const bedrooms = searchParams?.bedrooms || 'all'
-  const propertyType = searchParams?.propertyType || 'all'
-  const unverified = searchParams?.unverified === 'true'
-  const sortBy = searchParams?.sortBy || 'created_at'
-  const sortOrder = searchParams?.sortOrder || 'desc'
-
-  const { schemas, totalCount, builders } = await getSchemas({
-    page,
-    search,
-    builder,
-    bedrooms,
-    propertyType,
-    unverified,
-    sortBy,
-    sortOrder
-  })
-
-  const totalPages = Math.ceil(totalCount / 20)
+  const schemas = await getSchemas()
+  const builders = await getBuilders()
 
   return (
     <div className="space-y-8">
@@ -164,23 +162,22 @@ export default async function SchemasPage({ searchParams }: SchemasPageProps) {
         </Link>
       </div>
 
-{/* Schemas List Component */}
+      {/* Schemas List Component */}
       <Suspense fallback={<div>Loading...</div>}>
         <SchemasClientComponent 
           schemas={schemas}
           builders={builders}
-          totalCount={totalCount}
-          totalPages={totalPages}
-          currentPage={page}
-          initialFilters={{
-            search,
-            builder,
+        />
             bedrooms,
             propertyType,
             unverified,
             sortBy,
             sortOrder
-          }}
+      {/* Schemas List Component */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <SchemasClientComponent 
+          schemas={schemas}
+          builders={builders}
         />
       </Suspense>
     </div>

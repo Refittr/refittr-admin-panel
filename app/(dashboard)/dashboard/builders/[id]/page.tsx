@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import type { Builder } from '@/lib/supabase'
 
 interface FormData {
@@ -51,21 +50,18 @@ export default function EditBuilderPage() {
 
   const fetchBuilder = async () => {
     try {
-      const { data, error } = await supabase
-        .from('builders')
-        .select('*')
-        .eq('id', builderId)
-        .single()
+      const response = await fetch(`/api/builders/${builderId}`)
 
-      if (error) {
-        if (error.code === 'PGRST116') {
-          setNotFound(true)
-        } else {
-          throw error
-        }
+      if (response.status === 404) {
+        setNotFound(true)
         return
       }
 
+      if (!response.ok) {
+        throw new Error('Failed to fetch builder')
+      }
+
+      const data = await response.json()
       setBuilder(data)
       setFormData({
         name: data.name,
@@ -149,27 +145,24 @@ export default function EditBuilderPage() {
     setUploadProgress(0)
 
     try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`
-      const filePath = `builder-logos/${fileName}`
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('bucket', 'builder-logos')
 
-      const { data, error } = await supabase.storage
-        .from('builder-logos')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        })
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Upload failed')
+      }
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('builder-logos')
-        .getPublicUrl(data.path)
-
+      const data = await response.json()
       setUploadProgress(100)
-      return urlData.publicUrl
-    } catch (error) {
+      return data.url
+    } catch (error: any) {
       console.error('Error uploading logo:', error)
       setErrors(prev => ({ ...prev, logo: 'Failed to upload logo. Please try again.' }))
       return null
@@ -204,24 +197,27 @@ export default function EditBuilderPage() {
         }
       }
 
-      // Update builder in database
-      const { error } = await supabase
-        .from('builders')
-        .update({
+      // Update builder in database via API
+      const response = await fetch(`/api/builders/${builderId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           name: formData.name.trim(),
           notes: formData.notes.trim() || null,
-          logo_url: logoUrl,
-          updated_at: new Date().toISOString()
+          logo_url: logoUrl
         })
-        .eq('id', builderId)
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to update builder')
+      }
 
       setSuccessMessage('Builder updated successfully!')
       
       // Redirect after a short delay to show success message
       setTimeout(() => {
-        router.push('/builders')
+        router.push('/dashboard/builders')
       }, 1500)
 
     } catch (error) {
@@ -246,19 +242,21 @@ export default function EditBuilderPage() {
         await deleteOldLogo(builder.logo_url)
       }
 
-      // Delete builder from database
-      const { error } = await supabase
-        .from('builders')
-        .delete()
-        .eq('id', builderId)
+      // Delete builder from database via API
+      const response = await fetch(`/api/builders/${builderId}`, {
+        method: 'DELETE'
+      })
 
-      if (error) throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to delete builder')
+      }
 
       setSuccessMessage('Builder deleted successfully!')
       
       // Redirect after a short delay
       setTimeout(() => {
-        router.push('/builders')
+        router.push('/dashboard/builders')
       }, 1000)
 
     } catch (error) {
