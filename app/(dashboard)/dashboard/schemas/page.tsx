@@ -65,83 +65,14 @@ async function getBuilders(): Promise<Builder[]> {
     return []
   }
 }
-          name,
-          logo_url
-        ),
-        rooms(count)
-      `, { count: 'exact' })
-
-    // Apply filters
-    if (params.search) {
-      query = query.ilike('model_name', `%${params.search}%`)
-    }
-
-    if (params.builder) {
-      query = query.eq('builder_id', params.builder)
-    }
-
-    if (params.bedrooms && params.bedrooms !== 'all') {
-      if (params.bedrooms === '5+') {
-        query = query.gte('bedrooms', 5)
-      } else {
-        query = query.eq('bedrooms', parseInt(params.bedrooms))
-      }
-    }
-
-    if (params.propertyType && params.propertyType !== 'all') {
-      query = query.eq('property_type', params.propertyType)
-    }
-
-    if (params.unverified) {
-      query = query.eq('verified', false)
-    }
-
-    // Apply sorting
-    const sortColumn = params.sortBy || 'created_at'
-    const sortOrder = params.sortOrder === 'asc' ? { ascending: true } : { ascending: false }
-    query = query.order(sortColumn, sortOrder)
-
-    // Apply pagination
-    query = query.range(offset, offset + pageSize - 1)
-
-    const { data, error, count } = await query
-
-    if (error) throw error
-
-    // Get all builders for filter dropdown
-    const { data: builders, error: buildersError } = await supabase
-  .from('builders')
-  .select('*')
-  .order('name')
-
-    if (buildersError) throw buildersError
-
-    // Transform the data
-    const schemas: SchemaWithBuilder[] = (data || []).map((schema: any) => ({
-      ...schema,
-      builder: schema.builders,
-      room_count: schema.rooms?.[0]?.count || 0,
-      street_count: schema.streets?.[0]?.count || 0
-    }))
-
-    return {
-      schemas,
-      totalCount: count || 0,
-      builders: builders || []
-    }
-  } catch (error) {
-    console.error('Error fetching schemas:', error)
-    return {
-      schemas: [],
-      totalCount: 0,
-      builders: []
-    }
-  }
-}
 
 export default async function SchemasPage({ searchParams }: SchemasPageProps) {
   const schemas = await getSchemas()
   const builders = await getBuilders()
+
+  const currentPage = parseInt(searchParams?.page || '1')
+  const pageSize = 10
+  const totalPages = Math.ceil(schemas.length / pageSize)
 
   return (
     <div className="space-y-8">
@@ -167,17 +98,18 @@ export default async function SchemasPage({ searchParams }: SchemasPageProps) {
         <SchemasClientComponent 
           schemas={schemas}
           builders={builders}
-        />
-            bedrooms,
-            propertyType,
-            unverified,
-            sortBy,
-            sortOrder
-      {/* Schemas List Component */}
-      <Suspense fallback={<div>Loading...</div>}>
-        <SchemasClientComponent 
-          schemas={schemas}
-          builders={builders}
+          totalCount={schemas.length}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          initialFilters={{
+            search: searchParams?.search || '',
+            builder: searchParams?.builder || '',
+            bedrooms: searchParams?.bedrooms || 'all',
+            propertyType: searchParams?.propertyType || 'all',
+            unverified: searchParams?.unverified === 'true',
+            sortBy: searchParams?.sortBy || 'created_at',
+            sortOrder: searchParams?.sortOrder || 'desc'
+          }}
         />
       </Suspense>
     </div>
