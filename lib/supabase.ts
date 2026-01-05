@@ -15,8 +15,14 @@ export function createSupabaseClient() {
 export function createSupabaseAdmin() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!serviceRoleKey) {
-    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
+    throw new Error(`SUPABASE_SERVICE_ROLE_KEY is not set. Available env vars: ${Object.keys(process.env).filter(k => k.includes('SUPABASE')).join(', ')}`)
   }
+  
+  // Validate the key format
+  if (!serviceRoleKey.startsWith('eyJ')) {
+    throw new Error(`SUPABASE_SERVICE_ROLE_KEY has invalid format. Length: ${serviceRoleKey.length}, Prefix: ${serviceRoleKey.substring(0, 20)}`)
+  }
+  
   return createClient(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
