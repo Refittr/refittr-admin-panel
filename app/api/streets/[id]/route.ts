@@ -3,10 +3,11 @@ import { createSupabaseAdmin } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createSupabaseAdmin()
+    const { id } = await params
 
     const { data, error } = await supabase
       .from('streets')
@@ -14,7 +15,7 @@ export async function GET(
         *,
         developments!development_id(name)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error) throw error
@@ -31,11 +32,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createSupabaseAdmin()
     const body = await request.json()
+    const { id } = await params
 
     const { data, error } = await supabase
       .from('streets')
@@ -45,7 +47,7 @@ export async function PUT(
         postcode_area: body.postcode_area,
         development_id: body.development_id || null
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -63,15 +65,16 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createSupabaseAdmin()
+    const { id } = await params
 
     const { error } = await supabase
       .from('streets')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) throw error
 

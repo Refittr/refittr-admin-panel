@@ -390,27 +390,21 @@ export default function NewSchemaPage() {
     }
   }
 
-  const uploadFile = async (file: File, bucket: string, folder: string): Promise<string | null> => {
+  const uploadFile = async (file: File, bucket: string): Promise<string | null> => {
     try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`
-      const filePath = `${folder}/${fileName}`
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('bucket', bucket)
 
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        })
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
 
-      if (error) throw error
+      if (!response.ok) throw new Error('Upload failed')
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(data.path)
-
-      return urlData.publicUrl
+      const data = await response.json()
+      return data.url
     } catch (error) {
       console.error(`Error uploading to ${bucket}:`, error)
       return null
@@ -428,7 +422,7 @@ export default function NewSchemaPage() {
 
       // Upload floor plan
       if (selectedFiles.floor_plan) {
-        const uploadPromise = uploadFile(selectedFiles.floor_plan, 'floor-plans', 'floor-plans').then(url => {
+        const uploadPromise = uploadFile(selectedFiles.floor_plan, 'floor-plans').then(url => {
           completedUploads++
           setUploadProgress((completedUploads / totalUploads) * 100)
           return url
@@ -438,7 +432,7 @@ export default function NewSchemaPage() {
 
       // Upload exterior photo
       if (selectedFiles.exterior_photo) {
-        const uploadPromise = uploadFile(selectedFiles.exterior_photo, 'exterior-photos', 'exterior-photos').then(url => {
+        const uploadPromise = uploadFile(selectedFiles.exterior_photo, 'exterior-photos').then(url => {
           completedUploads++
           setUploadProgress((completedUploads / totalUploads) * 100)
           return url
@@ -448,7 +442,7 @@ export default function NewSchemaPage() {
 
       // Upload spec sheet if provided
       if (selectedFiles.spec_sheet) {
-        const uploadPromise = uploadFile(selectedFiles.spec_sheet, 'spec-sheets', 'spec-sheets').then(url => {
+        const uploadPromise = uploadFile(selectedFiles.spec_sheet, 'spec-sheets').then(url => {
           completedUploads++
           setUploadProgress((completedUploads / totalUploads) * 100)
           return url

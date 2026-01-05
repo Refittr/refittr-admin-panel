@@ -124,17 +124,9 @@ export default function EditBuilderPage() {
     if (!logoUrl) return
 
     try {
-      // Extract file path from URL
-      const url = new URL(logoUrl)
-      const pathParts = url.pathname.split('/')
-      const bucketIndex = pathParts.findIndex(part => part === 'builder-logos')
-      
-      if (bucketIndex !== -1) {
-        const filePath = pathParts.slice(bucketIndex + 1).join('/')
-        await supabase.storage
-          .from('builder-logos')
-          .remove([filePath])
-      }
+      // Note: File deletion should be handled server-side
+      // For now, we'll skip deletion as it requires service role key
+      console.log('Old logo will remain in storage:', logoUrl)
     } catch (error) {
       console.error('Error deleting old logo:', error)
     }

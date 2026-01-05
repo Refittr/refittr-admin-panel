@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
-import type { Builder, HouseSchema } from '@/lib/supabase'
+import { createSupabaseAdmin } from '@/lib/supabase'
 
 interface DashboardStats {
   totalBuilders: number
@@ -21,6 +20,8 @@ interface RecentSchema {
 
 async function getDashboardStats(): Promise<DashboardStats> {
   try {
+    const supabase = createSupabaseAdmin()
+    
     // Fetch all statistics in parallel
     const [
       { count: totalBuilders },
@@ -57,6 +58,8 @@ async function getDashboardStats(): Promise<DashboardStats> {
 
 async function getRecentActivity(): Promise<RecentSchema[]> {
   try {
+    const supabase = createSupabaseAdmin()
+    
     const { data, error } = await supabase
       .from('house_schemas')
       .select(`

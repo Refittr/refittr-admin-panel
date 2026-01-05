@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import type { HouseSchema, Builder } from '@/lib/supabase'
 
 interface SchemaWithBuilder extends HouseSchema {
@@ -150,12 +149,11 @@ export default function SchemasClientComponent({
     setIsDeleting(schemaId)
     
     try {
-      const { error } = await supabase
-        .from('house_schemas')
-        .delete()
-        .eq('id', schemaId)
+      const response = await fetch(`/api/schemas/${schemaId}`, {
+        method: 'DELETE'
+      })
 
-      if (error) throw error
+      if (!response.ok) throw new Error('Failed to delete schema')
 
       // Remove schema from local state
       setSchemas(prev => prev.filter(s => s.id !== schemaId))
