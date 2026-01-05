@@ -197,7 +197,7 @@ export default function BuildersClientComponent({ builders: initialBuilders }: B
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end space-x-2">
                         <Link
-                          href={`/builders/${builder.id}`}
+                          href={`/dashboard/builders/${builder.id}`}
                           className="text-[#087F8C] hover:text-[#087F8C]/80 font-medium"
                         >
                           Edit

@@ -69,8 +69,9 @@ async function getBuilders(): Promise<Builder[]> {
 export default async function SchemasPage({ searchParams }: SchemasPageProps) {
   const schemas = await getSchemas()
   const builders = await getBuilders()
+  const params = await searchParams
 
-  const currentPage = parseInt(searchParams?.page || '1')
+  const currentPage = parseInt(params?.page || '1')
   const pageSize = 10
   const totalPages = Math.ceil(schemas.length / pageSize)
 
@@ -102,13 +103,13 @@ export default async function SchemasPage({ searchParams }: SchemasPageProps) {
           totalPages={totalPages}
           currentPage={currentPage}
           initialFilters={{
-            search: searchParams?.search || '',
-            builder: searchParams?.builder || '',
-            bedrooms: searchParams?.bedrooms || 'all',
-            propertyType: searchParams?.propertyType || 'all',
-            unverified: searchParams?.unverified === 'true',
-            sortBy: searchParams?.sortBy || 'created_at',
-            sortOrder: searchParams?.sortOrder || 'desc'
+            search: params?.search || '',
+            builder: params?.builder || '',
+            bedrooms: params?.bedrooms || 'all',
+            propertyType: params?.propertyType || 'all',
+            unverified: params?.unverified === 'true',
+            sortBy: params?.sortBy || 'created_at',
+            sortOrder: params?.sortOrder || 'desc'
           }}
         />
       </Suspense>
