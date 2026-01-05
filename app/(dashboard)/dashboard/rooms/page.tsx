@@ -6,8 +6,8 @@ export const dynamic = 'force-dynamic'
 export default async function RoomsPage() {
   const supabase = createSupabaseAdmin()
   
-  let rooms = []
-  let schemas = []
+  let rooms: any[] = []
+  let schemas: any[] = []
   
   try {
     const [roomsData, schemasData] = await Promise.all([

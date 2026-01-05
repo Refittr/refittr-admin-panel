@@ -365,7 +365,7 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
                       type="number"
                       min="0"
                       value={formData.length_cm}
-                      onChange={(e) => setFormData({ ...formData, length_cm: parseInt(e.target.value) })}
+                      onChange={(e) => setFormData({ ...formData, length_cm: e.target.value })}
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#087F8C]"
                     />
@@ -378,7 +378,7 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
                       type="number"
                       min="0"
                       value={formData.width_cm}
-                      onChange={(e) => setFormData({ ...formData, width_cm: parseInt(e.target.value) })}
+                      onChange={(e) => setFormData({ ...formData, width_cm: e.target.value })}
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#087F8C]"
                     />
@@ -391,7 +391,7 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
                       type="number"
                       min="0"
                       value={formData.height_cm}
-                      onChange={(e) => setFormData({ ...formData, height_cm: parseInt(e.target.value) })}
+                      onChange={(e) => setFormData({ ...formData, height_cm: e.target.value })}
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#087F8C]"
                     />
