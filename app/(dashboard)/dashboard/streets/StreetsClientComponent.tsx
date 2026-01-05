@@ -14,6 +14,7 @@ export default function StreetsClientComponent({ initialStreets }: StreetsClient
 
   const filteredStreets = streets.filter(street =>
     street.street_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    street.postcode_area?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     street.developments?.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -49,6 +50,9 @@ export default function StreetsClientComponent({ initialStreets }: StreetsClient
                 Street Name
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Postcode Area
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Development
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -62,7 +66,7 @@ export default function StreetsClientComponent({ initialStreets }: StreetsClient
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredStreets.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-12 text-center text-sm text-gray-500">
+                <td colSpan={5} className="px-6 py-12 text-center text-sm text-gray-500">
                   {searchTerm ? 'No streets found matching your search.' : 'No streets yet. Create your first one!'}
                 </td>
               </tr>
@@ -71,6 +75,9 @@ export default function StreetsClientComponent({ initialStreets }: StreetsClient
                 <tr key={street.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-[#0F172A]">{street.street_name}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">{street.postcode_area || 'N/A'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">{street.developments?.name || 'N/A'}</div>

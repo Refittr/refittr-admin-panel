@@ -272,7 +272,7 @@ export default async function DashboardPage() {
                     {stats.unverifiedSchemas} house schema{stats.unverifiedSchemas !== 1 ? 's' : ''} need{stats.unverifiedSchemas === 1 ? 's' : ''} verification
                   </p>
                   <Link
-                    href="/schemas?verified=false"
+                    href="/dashboard/schemas?verified=false"
                     className="text-sm text-orange-800 underline hover:text-orange-900 mt-2 inline-block"
                   >
                     Review now →
