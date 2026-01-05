@@ -3,6 +3,8 @@ import { createSupabaseAdmin } from '@/lib/supabase'
 import type { Builder } from '@/lib/supabase'
 import BuildersClientComponent from '@/app/(dashboard)/dashboard/builders/BuildersClientComponent'
 
+export const dynamic = 'force-dynamic'
+
 interface BuilderWithStats extends Builder {
   schema_count: number
 }

@@ -1,6 +1,8 @@
 import { createSupabaseAdmin } from '@/lib/supabase'
 import StreetsClientComponent from './StreetsClientComponent'
 
+export const dynamic = 'force-dynamic'
+
 export default async function StreetsPage() {
   const supabase = createSupabaseAdmin()
   

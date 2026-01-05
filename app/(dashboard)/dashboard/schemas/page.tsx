@@ -4,6 +4,8 @@ import type { HouseSchema, Builder } from '@/lib/supabase'
 import SchemasClientComponent from '@/app/(dashboard)/dashboard/schemas/SchemasClientComponent'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 interface SchemaWithBuilder extends HouseSchema {
   builder: Builder
   room_count: number

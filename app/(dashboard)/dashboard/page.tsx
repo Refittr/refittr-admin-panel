@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { createSupabaseAdmin } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 interface DashboardStats {
   totalBuilders: number
   totalSchemas: number

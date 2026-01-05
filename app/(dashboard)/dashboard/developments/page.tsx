@@ -1,6 +1,8 @@
 import { createSupabaseAdmin } from '@/lib/supabase'
 import DevelopmentsClientComponent from './DevelopmentsClientComponent'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DevelopmentsPage() {
   const supabase = createSupabaseAdmin()
   
