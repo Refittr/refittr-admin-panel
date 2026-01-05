@@ -189,7 +189,7 @@ export default function SchemasClientComponent({
           Get started by adding your first house schema with floor plans and room details.
         </p>
         <Link
-          href="/schemas/new"
+          href="/dashboard/schemas/new"
           className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-[#087F8C] hover:bg-[#087F8C]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
         >
           <span className="mr-2">+</span>

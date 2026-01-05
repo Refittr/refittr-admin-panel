@@ -150,14 +150,14 @@ export default async function DashboardPage() {
         {/* Quick Action Buttons */}
         <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
           <Link
-            href="/builders/new"
+            href="/dashboard/builders/new"
             className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#087F8C] hover:bg-[#087F8C]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
           >
             <span className="mr-2">+</span>
             Add New Builder
           </Link>
           <Link
-            href="/schemas/new"
+            href="/dashboard/schemas/new"
             className="inline-flex items-center justify-center px-4 py-2 border border-[#087F8C] rounded-md shadow-sm text-sm font-medium text-[#087F8C] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
           >
             <span className="mr-2">+</span>

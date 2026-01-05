@@ -42,6 +42,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center h-16 px-6 bg-[#087F8C]">
+            <img src="/refitttr-app-icon-512.png" alt="Refittr" className="h-10 w-10 mr-3" />
             <h1 className="text-xl font-bold text-white">Refittr Admin</h1>
           </div>
 
