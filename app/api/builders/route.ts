@@ -27,6 +27,11 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('[API] POST /api/builders - Starting')
+    console.log('[API] Service role key exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
+    console.log('[API] Service role key length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length)
+    console.log('[API] Service role key prefix:', process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 30))
+    
     const supabase = createSupabaseAdmin()
     const body = await request.json()
 
