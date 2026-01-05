@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -36,14 +37,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-[#024059] transform transition-transform lg:translate-x-0 ${
+      <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-[#0F172A] transform transition-transform lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center h-16 px-6 bg-[#087F8C]">
-            <img src="/refitttr-app-icon-512.png" alt="Refittr" className="h-10 w-10 mr-3" />
-            <h1 className="text-xl font-bold text-white">Refittr Admin</h1>
+          <div className="flex items-center h-16 px-6 bg-[#0F172A] border-b border-gray-800">
+            <Image src="/refittr-app-icon-512.png" alt="Refittr" width={40} height={40} className="mr-3" />
+            <h1 className="text-xl font-bold text-white">Admin</h1>
           </div>
 
           {/* Navigation */}
@@ -55,7 +56,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                   isActive(item.href)
                     ? 'bg-[#087F8C] text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    : 'text-gray-300 hover:bg-slate-800 hover:text-white'
                 }`}
                 onClick={() => setSidebarOpen(false)}
               >
@@ -66,14 +67,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </nav>
 
           {/* User info placeholder */}
-          <div className="px-4 py-4 border-t border-gray-700">
+          <div className="px-4 py-4 border-t border-gray-800">
             <div className="flex items-center">
               <div className="w-8 h-8 bg-[#087F8C] rounded-full flex items-center justify-center">
                 <span className="text-sm font-medium text-white">U</span>
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-white">Admin User</p>
-                <p className="text-xs text-gray-300">admin@refittr.com</p>
+                <p className="text-xs text-gray-400">admin@refittr.com</p>
               </div>
             </div>
           </div>

@@ -9,9 +9,9 @@ export default async function StreetsPage() {
     .from('streets')
     .select(`
       *,
-      development:developments(name)
+      developments!development_id(name)
     `)
-    .order('name', { ascending: true })
+    .order('street_name', { ascending: true })
 
   if (error) {
     console.error('Error fetching streets:', error)

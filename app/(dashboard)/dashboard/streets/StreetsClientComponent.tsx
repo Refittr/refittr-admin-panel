@@ -5,7 +5,7 @@ import { Street } from '@/lib/supabase'
 import Link from 'next/link'
 
 interface StreetsClientComponentProps {
-  initialStreets: (Street & { development?: { name: string } })[]
+  initialStreets: (Street & { developments?: { name: string } })[]
 }
 
 export default function StreetsClientComponent({ initialStreets }: StreetsClientComponentProps) {
@@ -14,7 +14,7 @@ export default function StreetsClientComponent({ initialStreets }: StreetsClient
 
   const filteredStreets = streets.filter(street =>
     street.street_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    street.development?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    street.developments?.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   return (
@@ -73,7 +73,7 @@ export default function StreetsClientComponent({ initialStreets }: StreetsClient
                     <div className="text-sm font-medium text-[#0F172A]">{street.street_name}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{street.development?.name || 'N/A'}</div>
+                    <div className="text-sm text-gray-500">{street.developments?.name || 'N/A'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">
