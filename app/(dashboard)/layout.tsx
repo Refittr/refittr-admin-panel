@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard/dashboard', icon: '📊' },
+  { name: 'Dashboard', href: '/dashboard', icon: '📊' },
   { name: 'Builders', href: '/dashboard/builders', icon: '🏗️' },
   { name: 'House Schemas', href: '/dashboard/schemas', icon: '🏠' },
   { name: 'Developments', href: '/dashboard/developments', icon: '🏘️' },
@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname()
 
   const isActive = (href: string) => {
-    if (href === '/') return pathname === '/'
+    if (href === '/dashboard') return pathname === '/dashboard'
     return pathname.startsWith(href)
   }
 
