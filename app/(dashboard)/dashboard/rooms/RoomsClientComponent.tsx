@@ -42,6 +42,8 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
     length_cm: '',
     width_cm: '',
     height_cm: '240',
+    dimensions_need_verification: false,
+    verification_reason: '',
     notes: ''
   })
 
@@ -75,6 +77,8 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
         length_cm: lengthCm,
         width_cm: widthCm,
         height_cm: heightCm,
+        dimensions_need_verification: formData.dimensions_need_verification,
+        verification_reason: formData.dimensions_need_verification ? formData.verification_reason : null,
         notes: formData.notes || null
       }
 
@@ -105,6 +109,15 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
       length_cm: room.length_cm.toString(),
       width_cm: room.width_cm.toString(),
       height_cm: room.height_cm.toString(),
+      dimensions_need_verification: (room as any).dimensions_need_verification || false,
+      verification_reason: (room as any).verification_reason || '',
+      notes: room.notes || ''
+    })
+    setShowEditModal(true)
+  }
+      height_cm: room.height_cm.toString(),
+      dimensions_need_verification: (room as any).dimensions_need_verification || false,
+      verification_reason: (room as any).verification_reason || '',
       notes: room.notes || ''
     })
     setShowEditModal(true)
@@ -129,6 +142,8 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
         length_cm: lengthCm,
         width_cm: widthCm,
         height_cm: heightCm,
+        dimensions_need_verification: formData.dimensions_need_verification,
+        verification_reason: formData.dimensions_need_verification ? formData.verification_reason : null,
         notes: formData.notes || null
       }
 
@@ -226,8 +241,21 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
                 filteredRooms.map((room) => (
                   <tr key={room.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-[#0F172A]">{room.room_name}</div>
+                      <div className="text-sm font-medium text-[#0F172A] flex items-center">
+                        {room.room_name}
+                        {(room as any).dimensions_need_verification && (
+                          <span 
+                            className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800" 
+                            title={(room as any).verification_reason || "Dimensions need verification"}
+                          >
+                            ⚠️
+                          </span>
+                        )}
+                      </div>
                       <div className="text-xs text-gray-500">Floor {room.floor_level}</div>
+                      {(room as any).dimensions_need_verification && (room as any).verification_reason && (
+                        <div className="text-xs text-yellow-700 mt-1">⚠️ {(room as any).verification_reason}</div>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500 capitalize">{room.room_type}</div>
@@ -395,6 +423,40 @@ export default function RoomsClientComponent({ initialRooms, schemas }: RoomsCli
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#087F8C]"
                     />
+                  </div>
+                </div>
+
+                {/* Dimensions Verification Flag */}
+                <div className="flex items-start space-x-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                  <input
+                    type="checkbox"
+                    id="dimensions_need_verification"
+                    checked={formData.dimensions_need_verification}
+                    onChange={(e) => setFormData({ ...formData, dimensions_need_verification: e.target.checked })}
+                    className="h-4 w-4 text-[#087F8C] focus:ring-[#087F8C] border-gray-300 rounded mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <label htmlFor="dimensions_need_verification" className="text-sm font-medium text-gray-900 cursor-pointer">
+                      Dimensions need verification
+                    </label>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Check this if dimensions exclude fixtures (e.g., fitted wardrobes) or need verification before matching
+                    </p>
+                    
+                    {formData.dimensions_need_verification && (
+                      <div className="mt-3">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Reason for verification
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.verification_reason}
+                          onChange={(e) => setFormData({ ...formData, verification_reason: e.target.value })}
+                          placeholder="e.g., Excludes fitted wardrobes"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#087F8C] text-sm"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
