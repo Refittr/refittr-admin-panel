@@ -450,13 +450,13 @@ export default function SchemasClientComponent({
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end space-x-2">
                         <Link
-                          href={`/schemas/${schema.id}`}
+                          href={`/dashboard/schemas/${schema.id}`}
                           className="text-[#024059] hover:text-[#024059]/80 font-medium"
                         >
                           View
                         </Link>
                         <Link
-                          href={`/schemas/${schema.id}/edit`}
+                          href={`/dashboard/schemas/${schema.id}/edit`}
                           className="text-[#087F8C] hover:text-[#087F8C]/80 font-medium"
                         >
                           Edit
