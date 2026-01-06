@@ -964,7 +964,7 @@ export default function NewSchemaPage() {
             {/* Spec Sheet Upload (Optional) */}
             <div>
               <label className="block text-sm font-medium text-[#0F172A] mb-2">
-                Spec Sheet (PDF) - Optional
+                Spec Sheet (PDF or Image) - Optional
               </label>
               {selectedFiles.spec_sheet ? (
                 <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
@@ -1001,7 +1001,7 @@ export default function NewSchemaPage() {
                 >
                   <input
                     type="file"
-                    accept=".pdf"
+                    accept=".pdf,.jpg,.jpeg,.png,.webp"
                     onChange={(e) => {
                       const file = e.target.files?.[0]
                       if (file) handleFileSelect('spec_sheet', file)
@@ -1015,7 +1015,7 @@ export default function NewSchemaPage() {
                       Click to upload or drag and drop
                     </p>
                     <p className="text-xs text-gray-500">
-                      PDF up to 10MB
+                      PDF or Image up to 10MB
                     </p>
                   </label>
                 </div>
