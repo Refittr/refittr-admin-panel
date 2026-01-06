@@ -40,7 +40,6 @@ export default function HomePage() {
               alt="Refittr Logo"
               width={120}
               height={120}
-              className="rounded-2xl shadow-lg"
             />
           </div>
 
