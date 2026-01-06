@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Smartphone, BadgeCheck, Coins } from 'lucide-react'
 
 export default function AboutPage() {
   const [email, setEmail] = useState('')
@@ -83,13 +84,16 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">Our Mission</h2>
               <div className="text-[#6B7280] leading-relaxed space-y-4">
                 <p>
-                  Every year, thousands of perfectly good home fixtures end up in landfills simply because homeowners don't know if they'll fit in their new space. Meanwhile, others spend hundreds or thousands of pounds on new fixtures when quality second-hand options exist.
+                  Every year, thousands of perfectly good home fixtures end up in landfills simply because homeowners don't know if they'll fit in their new space. Meanwhile, others spend hundreds or thousands of pounds on new fixtures when quality second-hand options exist just down the road.
                 </p>
                 <p>
-                  Refittr solves this problem by bringing precision to the second-hand fixtures market. We've built an intelligent matching system that compares item dimensions to verified UK house builder schemas, giving you confidence that what you buy will actually fit.
+                  Refittr solves this with a simple insight: <strong>if you have the same house type as someone else, everything from their home automatically fits yours</strong>. Got a 3-bed Barratt Kingsville? So does someone selling blinds, carpets, and kitchen units. No measuring, no guessing - just perfect fits.
+                </p>
+                <p>
+                  We've built the UK's first house-to-house matching platform for home fixtures. Tell us your house type, and we'll show you items that are <i>guaranteed</i> to fit - complete with green "verified match" badges for exact house matches and amber highlights for close matches with small tolerances.
                 </p>
                 <p className="font-semibold text-[#087F8C]">
-                  Reduce waste. Save money. Perfect fit guaranteed.
+                  Same house = perfect fit. Reduce waste. Save money. No tape measure required.
                 </p>
               </div>
             </section>
@@ -101,28 +105,28 @@ export default function AboutPage() {
                 <div>
                   <div className="flex items-center mb-3">
                     <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#087F8C] text-white font-bold mr-3">1</span>
-                    <h3 className="text-lg font-semibold text-[#0F172A]">Verified House Schemas</h3>
+                    <h3 className="text-lg font-semibold text-[#0F172A]">Tell Us Your House Type</h3>
                   </div>
                   <p className="text-[#6B7280] leading-relaxed ml-11">
-                    We maintain a comprehensive database of UK house builder floor plans and specifications. From major builders like Persimmon, Taylor Wimpey, and Barratt Homes, we have the exact dimensions of rooms, doorways, and spaces in thousands of UK homes built from 2010 onwards.
+                    When you sign up, just tell us your house builder, development name, and house type (e.g., "3-bed Barratt Kingsville"). That's it. We already know the exact dimensions of every room, doorway, and space in your home from our comprehensive database of UK house builder floor plans.
                   </p>
                 </div>
                 <div>
                   <div className="flex items-center mb-3">
                     <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#087F8C] text-white font-bold mr-3">2</span>
-                    <h3 className="text-lg font-semibold text-[#0F172A]">Intelligent Matching Algorithm</h3>
+                    <h3 className="text-lg font-semibold text-[#0F172A]">Automatic House-to-House Matching</h3>
                   </div>
                   <p className="text-[#6B7280] leading-relaxed ml-11">
-                    When you search for a fixture, our algorithm compares the item's dimensions against your house schema. We check if it fits through doorways, if it suits the room dimensions, and if it matches the space constraints. No more guessing, no more measuring mistakes.
+                    Browse items from sellers with the <i>same house type</i> as you. See a green "verified match" badge? That item came from an identical house - it's <strong>guaranteed to fit perfectly</strong>. Blinds, carpets, flooring, even complete kitchens and bathrooms. No measuring needed. Amber highlights show "close matches" where there's a small difference (like a carpet 10cm too big) that you can still use with minor adjustments.
                   </p>
                 </div>
                 <div>
                   <div className="flex items-center mb-3">
                     <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#087F8C] text-white font-bold mr-3">3</span>
-                    <h3 className="text-lg font-semibold text-[#0F172A]">Buy & Sell with Confidence</h3>
+                    <h3 className="text-lg font-semibold text-[#0F172A]">Buy or Sell - No Tape Measure Required</h3>
                   </div>
                   <p className="text-[#6B7280] leading-relaxed ml-11">
-                    Sellers list their items with accurate dimensions. Buyers search knowing exactly what will fit. Our platform shows you only the fixtures that work for your specific house type, eliminating the frustration of purchasing items that don't fit.
+                    <strong>Selling?</strong> Just tell us your house type and we automatically know all the dimensions. List your items in seconds without measuring anything. <strong>Buying?</strong> Search knowing exactly what fits. Our platform shows you only items that work for your house, with delivery options from local van couriers, standard mail, van hire, or self-pickup. Set your distance preference for pickup options.
                   </p>
                 </div>
               </div>
@@ -132,7 +136,7 @@ export default function AboutPage() {
             <section className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">Who We Serve</h2>
               <p className="text-[#6B7280] leading-relaxed mb-4">
-                Refittr is designed for UK homeowners who live in newer homes (2010+) from major house builders. Our platform is particularly valuable for:
+                Refittr is designed for everyone. Our platform is particularly valuable for:
               </p>
               <div className="space-y-3 text-[#6B7280]">
                 <p className="flex items-start">
@@ -167,19 +171,27 @@ export default function AboutPage() {
               <div className="space-y-3 text-[#6B7280]">
                 <p className="flex items-start">
                   <span className="text-[#087F8C] mr-2">✓</span>
-                  <span><strong>Verification before purchase</strong> - We verify fit before you commit to buying</span>
+                  <span><strong>Perfect fit guarantee</strong> - Same house type = guaranteed fit. No measuring, no guessing</span>
                 </p>
                 <p className="flex items-start">
                   <span className="text-[#087F8C] mr-2">✓</span>
-                  <span><strong>No guessing games</strong> - Our algorithm tells you definitively if it will fit</span>
+                  <span><strong>Verified match badges</strong> - Green badges for exact house matches, amber for close matches with small tolerances</span>
                 </p>
                 <p className="flex items-start">
                   <span className="text-[#087F8C] mr-2">✓</span>
-                  <span><strong>House-specific recommendations</strong> - See items that work for your exact house type</span>
+                  <span><strong>No measuring needed</strong> - Sellers just tell us their house type, we know all the dimensions automatically</span>
                 </p>
                 <p className="flex items-start">
                   <span className="text-[#087F8C] mr-2">✓</span>
-                  <span><strong>Intelligent search</strong> - Filter by your house builder, development, and room type</span>
+                  <span><strong>Free to use</strong> - Sign up free, list items free. We only take a small commission when items sell</span>
+                </p>
+                <p className="flex items-start">
+                  <span className="text-[#087F8C] mr-2">✓</span>
+                  <span><strong>Delivery made easy</strong> - Partnering with local van couriers for delivery suggestions, plus standard mail, van hire, or self-pickup options with distance filters</span>
+                </p>
+                <p className="flex items-start">
+                  <span className="text-[#087F8C] mr-2">✓</span>
+                  <span><strong>House-specific search</strong> - Filter by your exact house builder, development, and room type</span>
                 </p>
                 <p className="flex items-start">
                   <span className="text-[#087F8C] mr-2">✓</span>
@@ -188,11 +200,37 @@ export default function AboutPage() {
               </div>
             </section>
 
+            {/* Platform Availability */}
+            <section className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+              <h2 className="text-2xl font-bold text-[#0F172A] mb-4">Available on iOS & Android</h2>
+              <p className="text-[#6B7280] leading-relaxed mb-4">
+                Refittr will be available as a free mobile app on both iOS and Android when we launch in July 2026. Download it free, browse free, buy and sell free - we only charge a small commission when items successfully sell.
+              </p>
+              <div className="space-y-3 text-[#6B7280]">
+                <p className="flex items-start">
+                  <Smartphone className="w-5 h-5 text-[#087F8C] mr-2 mt-0.5 flex-shrink-0" />
+                  <span><strong>iOS App Store</strong> - Available for iPhone and iPad</span>
+                </p>
+                <p className="flex items-start">
+                  <Smartphone className="w-5 h-5 text-[#087F8C] mr-2 mt-0.5 flex-shrink-0" />
+                  <span><strong>Google Play Store</strong> - Available for Android devices</span>
+                </p>
+                <p className="flex items-start">
+                  <BadgeCheck className="w-5 h-5 text-[#087F8C] mr-2 mt-0.5 flex-shrink-0" />
+                  <span><strong>100% Free to Download</strong> - No subscription fees, no listing fees</span>
+                </p>
+                <p className="flex items-start">
+                  <Coins className="w-5 h-5 text-[#087F8C] mr-2 mt-0.5 flex-shrink-0" />
+                  <span><strong>Commission-Based Only</strong> - We only earn when you successfully sell an item</span>
+                </p>
+              </div>
+            </section>
+
             {/* The Team */}
             <section className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">The Team</h2>
               <p className="text-[#6B7280] leading-relaxed">
-                Refittr is a bootstrapped startup founded by a team passionate about reducing waste and making home furnishing more accessible and affordable. We're combining technical expertise in data engineering, algorithm development, and marketplace design to solve a real problem that affects thousands of UK homeowners.
+                Refittr is a bootstrapped startup founded by a dumpster diver passionate about reducing waste and making home furnishing more accessible and affordable. We're combining technical expertise in software engineering, algorithm development, and marketplace design to solve a real problem that affects thousands of UK homeowners and tenants.
               </p>
               <p className="text-[#6B7280] leading-relaxed mt-4">
                 Based in the UK and starting with Merseyside, we're committed to building a platform that genuinely helps people while contributing to a more sustainable future.
@@ -203,25 +241,25 @@ export default function AboutPage() {
             <section className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">The Technology</h2>
               <p className="text-[#6B7280] leading-relaxed mb-6">
-                Behind Refittr is sophisticated technology that makes the matching process seamless:
+                Behind Refittr is sophisticated technology that makes house-to-house matching seamless:
               </p>
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0F172A] mb-2">Database of House Schemas</h3>
+                  <h3 className="text-lg font-semibold text-[#0F172A] mb-2">Comprehensive House Schema Database</h3>
                   <p className="text-[#6B7280] leading-relaxed">
-                    We've compiled comprehensive floor plans and specifications from major UK house builders. This includes room dimensions, doorway widths, ceiling heights, and access routes throughout the property.
+                    We've compiled detailed floor plans and specifications from major UK house builders including Persimmon, Taylor Wimpey, Barratt Homes, and more. Every room dimension, doorway, window, ceiling height, and access route is stored for thousands of UK house types. When you tell us your house, we already know everything about it.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0F172A] mb-2">Intelligent Matching Algorithm</h3>
+                  <h3 className="text-lg font-semibold text-[#0F172A] mb-2">House-to-House Matching Engine</h3>
                   <p className="text-[#6B7280] leading-relaxed">
-                    Our algorithm compares fixture dimensions against your house schema in real-time. It considers not just final placement, but the entire delivery route - doorways, hallways, staircases, and corners.
+                   Our matching algorithm instantly identifies items from identical house types and shows them with a green "verified match" badge - guaranteed perfect fit. For items with small differences (e.g., a carpet 10cm too big for your lounge), we show an amber "close match" highlight with the tolerance difference, so you can decide if it still works for you.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0F172A] mb-2">Verified Measurements</h3>
+                  <h3 className="text-lg font-semibold text-[#0F172A] mb-2">Automatic Dimension Detection</h3>
                   <p className="text-[#6B7280] leading-relaxed">
-                    Sellers provide standardised measurements that our system validates. Buyers can trust that the dimensions are accurate and complete.
+                    Sellers don't need to measure anything. When they tell us their house type, we automatically know the dimensions of every room and fixture space. Optionally, sellers can add custom measurements if an item differs from standard, but most of the time, we've already got it covered.
                   </p>
                 </div>
               </div>

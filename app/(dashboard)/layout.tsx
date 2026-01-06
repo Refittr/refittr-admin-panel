@@ -5,18 +5,19 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { createBrowserClient } from '@/lib/auth'
+import { LayoutDashboard, Building2, Home, DoorOpen, Building, MapPin } from 'lucide-react'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: '📊' },
-  { name: 'Builders', href: '/dashboard/builders', icon: '🏗️' },
-  { name: 'House Schemas', href: '/dashboard/schemas', icon: '🏠' },
-  { name: 'Rooms', href: '/dashboard/rooms', icon: '🚪' },
-  { name: 'Developments', href: '/dashboard/developments', icon: '🏘️' },
-  { name: 'Streets', href: '/dashboard/streets', icon: '🛤️' },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Builders', href: '/dashboard/builders', icon: Building2 },
+  { name: 'House Schemas', href: '/dashboard/schemas', icon: Home },
+  { name: 'Rooms', href: '/dashboard/rooms', icon: DoorOpen },
+  { name: 'Developments', href: '/dashboard/developments', icon: Building },
+  { name: 'Streets', href: '/dashboard/streets', icon: MapPin },
 ]
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -85,21 +86,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-2">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                  isActive(item.href)
-                    ? 'bg-[#087F8C] text-white'
-                    : 'text-gray-300 hover:bg-slate-800 hover:text-white'
-                }`}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <span className="mr-3 text-lg">{item.icon}</span>
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const IconComponent = item.icon
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                    isActive(item.href)
+                      ? 'bg-[#087F8C] text-white'
+                      : 'text-gray-300 hover:bg-slate-800 hover:text-white'
+                  }`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <IconComponent className="mr-3 w-5 h-5" />
+                  {item.name}
+                </Link>
+              )
+            })}
           </nav>
 
           {/* User info placeholder */}

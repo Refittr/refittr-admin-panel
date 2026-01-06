@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Home } from 'lucide-react'
 import { createBrowserClient } from '@/lib/auth'
 
 export default function LoginPage() {
@@ -74,8 +75,8 @@ export default function LoginPage() {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-[#087F8C] rounded-xl flex items-center justify-center text-3xl">
-              🏠
+            <div className="w-16 h-16 bg-[#087F8C] rounded-xl flex items-center justify-center">
+              <Home className="w-8 h-8 text-white" />
             </div>
           </div>
           <h2 className="text-3xl font-bold text-[#0F172A]">
@@ -166,7 +167,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-500">
-          Internal use only • Authorized personnel only
+          Internal use only • Authorised personnel only
         </p>
       </div>
     </div>
