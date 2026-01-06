@@ -163,10 +163,11 @@ export default function NewSchemaPage() {
       if (!response.ok) throw new Error('Failed to fetch streets')
       const allStreets = await response.json()
       
-      // Filter streets client-side
+      // Filter streets client-side - search by street name, postcode, or postcode area
       const filtered = allStreets.filter((street: Street) => 
         street.street_name.toLowerCase().includes(query.toLowerCase()) ||
-        street.postcode_area.toLowerCase().includes(query.toLowerCase())
+        street.postcode_area.toLowerCase().includes(query.toLowerCase()) ||
+        (street.postcode && street.postcode.toLowerCase().includes(query.toLowerCase()))
       ).slice(0, 20)
       
       setSearchResults(filtered)
