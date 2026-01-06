@@ -128,6 +128,15 @@ export default function NewSchemaPage() {
     }
   }, [currentStep])
 
+  // Trigger street search when user types
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      searchStreets(streetSearch)
+    }, 300) // Debounce by 300ms
+
+    return () => clearTimeout(debounceTimer)
+  }, [streetSearch])
+
   const fetchBuilders = async () => {
     try {
       const response = await fetch('/api/builders')
