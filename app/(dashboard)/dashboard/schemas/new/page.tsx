@@ -348,9 +348,20 @@ export default function NewSchemaPage() {
 
   const handleFileSelect = (type: 'floor_plan' | 'exterior_photo' | 'spec_sheet', file: File) => {
     // Validate file type
-    if (type === 'floor_plan' || type === 'spec_sheet') {
+    if (type === 'floor_plan') {
       if (file.type !== 'application/pdf') {
         setErrors(prev => ({ ...prev, [type]: 'Please select a PDF file' }))
+        return
+      }
+      const maxSize = 10 * 1024 * 1024 // 10MB
+      if (file.size > maxSize) {
+        setErrors(prev => ({ ...prev, [type]: 'File must be smaller than 10MB' }))
+        return
+      }
+    } else if (type === 'spec_sheet') {
+      const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      if (!validTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, [type]: 'Please select a PDF or image file (JPG, PNG, WebP)' }))
         return
       }
       const maxSize = 10 * 1024 * 1024 // 10MB
