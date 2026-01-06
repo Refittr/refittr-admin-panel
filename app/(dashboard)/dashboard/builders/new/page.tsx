@@ -361,7 +361,7 @@ export default function NewBuilderPage() {
         {/* Form Actions */}
         <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-3 sm:space-y-0 pt-6 border-t border-gray-200">
           <Link
-            href="/builders"
+            href="/dashboard/builders"
             className="inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#087F8C] transition-colors"
           >
             Cancel
