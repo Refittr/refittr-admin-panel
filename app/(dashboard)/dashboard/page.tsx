@@ -201,7 +201,7 @@ export default async function DashboardPage() {
                 recentActivity.map((schema) => (
                   <Link
                     key={schema.id}
-                    href={`/schemas/${schema.id}`}
+                    href={`/dashboard/schemas/${schema.id}`}
                     className="block px-6 py-4 hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center justify-between">
